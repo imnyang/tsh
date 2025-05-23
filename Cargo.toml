@@ -1,5 +1,8 @@
 [package]
 name = "tsh"
+description="A simple command line tool to move files to trash"
+authors = ["imnyang <me@imnya.ng>"]
+license = "GPL-3.0"
 version = "0.1.0"
 edition = "2024"
 
