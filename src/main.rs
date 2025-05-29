@@ -1,19 +1,24 @@
-use std::env;
-use std::process;
-use trash::delete;
-
+#[cfg(target_os = "macos")]
 fn main() {
-    let args: Vec<String> = env::args().skip(1).collect();
+    eprintln!("❌ macOS는 현재 지원되지 않습니다.");
+}
+
+#[cfg(not(target_os = "macos"))]
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let args: Vec<String> = std::env::args().skip(1).collect();
 
     if args.is_empty() {
-        eprintln!("Usage: tsh <file_or_folder>...");
-        process::exit(1);
+        eprintln!("Usage:\n  tsh <file_or_folder>...     # 삭제\n  tsh --restore | -u          # 복구 UI");
+        std::process::exit(1);
     }
 
-    for path in args {
-        match delete(&path) {
-            Ok(_) => println!("✅ {}", path),
-            Err(e) => eprintln!("❌ Failed to move '{}': {}", path, e),
-        }
-    }
+    /*match args[0].as_str() {
+        "--restore" | "-u" => restore::run_restore_ui()?,
+        _ => delete::run_delete(&args)?,
+    }*/
+
+    Ok(())
 }
+
+mod delete;
+//mod restore;
